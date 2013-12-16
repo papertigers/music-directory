@@ -138,5 +138,8 @@ License
 
 MIT
 
+Some included js have a different License.
+  alac.js, mp3.js, flac.js, and aac.js are GPL
+
 [0]: http://nodejs.org
 [1]: http://localhost:8080
