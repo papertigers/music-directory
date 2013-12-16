@@ -12,6 +12,8 @@ var cache = new BasicCache();
 
 var verbose = true;
 
+var aurora;
+
 var istouchdevice = !!('ontouchstart' in window) || !!('onmsgesturechange' in window);
 debug('is touch device: ' + istouchdevice);
 
@@ -53,10 +55,7 @@ $(document).ready(function() {
   // load the hash
   loadlocation(window.location.hash);
 
-  $audio.on('ended', next);
-  $audio.on('error', function(e) {
-    debug(e);
-  });
+  //$audio.on('ended', next);
 
   // the pull down/up menu for the footer
   $pullmenu.click(function() {
@@ -78,7 +77,7 @@ $(document).ready(function() {
   });
 
   // the now playing button
-  $controls.dom.hide();
+  //$controls.dom.hide();
   $controls.nowplaying.click(function() {
     var src = istouchdevice ? dirname($audio.attr('src')) : $audio.attr('src');
     loadlocation(src);
@@ -126,7 +125,8 @@ function dbllinkclick() {
   if (!isfile) return;
 
   var href= $this.attr('href') || $this.attr('data-href');
-  play(href);
+  
+  play(href)
 }
 
 // single click, load some stuff
@@ -322,12 +322,16 @@ function play(song) {
 
   var songname = basename(song);
   document.title = songname
-  $audio.attr('src', songwebsafe);
-  $controls.dom.show();
+  //$controls.dom.show();
   debug('song ' + playlistpos + ' of ' + playlist.length);
 
-  $audio[0].pause();
-  $audio[0].play();
+  if (aurora && aurora.playing) aurora.stop();
+  aurora = AV.Player.fromURL(songwebsafe);
+  aurora.on('error', function(e) { throw e });
+  aurora.on('end', next);
+  console.log(aurora);
+  aurora.play();
+
   // get the tags and set the title
   $.getJSON(songwebsafe + '?tags=true', function(data) {
     var s = '';
@@ -356,11 +360,10 @@ function next() {
 
 // toggle play/pause
 function toggle() {
-  var audio = $audio[0];
-  if (audio.paused) {
-    audio.play();
+  if (aurora.playing) {
+    aurora.pause();
   } else {
-    audio.pause();
+    aurora.play();
   }
-  console.log('music is now ' + ((audio.paused) ? 'paused' : 'playing'));
+  console.log('music is now ' + ((aurora.playing) ? 'playing' : 'paused'));
 }
