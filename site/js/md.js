@@ -22,8 +22,8 @@ function debug() {
   if (verbose) console.log.apply(console, arguments);
 }
 
-$(document).ready(function() 
-   unity = UnityMusicShim();
+$(document).ready(function() {
+  unity = UnityMusicShim();
 
 	//setup some unity things
   unity.setSupports({
@@ -33,18 +33,24 @@ $(document).ready(function()
   });
 
 
-	unity.setCallbackObject({
-  	pause: function() {
-			if (aurora && aurora.playing) auroa.pause()
-			if (aurora && !aurora.playing) auroa.play()
-  	},
-  	next: function() {
-    	//yourPlayer.skip();
-  	},
-  	previous:function() {
-    	//yourPlayer.previous();
-  	}
-	});
+  unity.setCallbackObject({
+    pause: function() {
+      if (aurora && aurora.playing) {
+				aurora.pause();
+				console.log("MIKE: pausing");
+			}
+      else if (aurora && ! aurora.playing) {
+				aurora.play();
+				console.log("MIKE: playing");
+			}
+    },
+    next: function() {
+      if (aurora && aurora.playing) next();
+    },
+    previous:function() {
+      if (aurora && aurora.playing) prev();
+    }
+  });
 
   $('.column').data('num', 0);
 
@@ -371,6 +377,13 @@ function play(song) {
   $.get(songwebsafe + '?info=true&size=200', function(data) {
     $info.html(data);
   });
+  
+  var playerState = {
+    playing: true,
+    title: "test",
+    artist: aurora.metadata.albumArtist
+  }
+  unity.sendState(playerState);
 }
 
 // prev track
