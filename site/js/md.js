@@ -13,6 +13,7 @@ var cache = new BasicCache();
 var verbose = true;
 
 var aurora;
+var unity;
 
 var istouchdevice = !!('ontouchstart' in window) || !!('onmsgesturechange' in window);
 debug('is touch device: ' + istouchdevice);
@@ -21,11 +22,11 @@ function debug() {
   if (verbose) console.log.apply(console, arguments);
 }
 
-$(document).ready(function() {
-  var unity = UnityMusicShim();
+$(document).ready(function() 
+   unity = UnityMusicShim();
 
 	//setup some unity things
-	unity.setSupports({
+  unity.setSupports({
     playpause: true,
     next: true,
     previous: true
