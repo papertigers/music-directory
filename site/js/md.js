@@ -26,10 +26,10 @@ $(document).ready(function() {
 
 	//setup some unity things
 	unity.setSupports({
-		  playpause: true,
-			next: true,
-		 	previous: true
-	});
+    playpause: true,
+    next: true,
+    previous: true
+  });
 
 
 	unity.setCallbackObject({
