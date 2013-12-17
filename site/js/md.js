@@ -13,31 +13,6 @@ var cache = new BasicCache();
 var verbose = true;
 
 var aurora;
-var unity = UnityMusicShim();
-
-//setup some unity things
-unity.setSupports({
-	  playpause: true,
-		next: true,
-		 previous: true
-});
-
-
-unity.setCallbackObject({
-  pause: function() {
-    log("Recieved playpause command");
-		if (aurora && aurora.playing) auroa.pause()
-		if (aurora && !aurora.playing) auroa.play()
-  },
-  next: function() {
-    log("Recieved next command")
-    //yourPlayer.skip();
-  },
-  previous:function() {
-    log("Recieved previous command");
-    //yourPlayer.previous();
-  }
-});
 
 var istouchdevice = !!('ontouchstart' in window) || !!('onmsgesturechange' in window);
 debug('is touch device: ' + istouchdevice);
@@ -47,6 +22,29 @@ function debug() {
 }
 
 $(document).ready(function() {
+  var unity = UnityMusicShim();
+
+	//setup some unity things
+	unity.setSupports({
+		  playpause: true,
+			next: true,
+		 	previous: true
+	});
+
+
+	unity.setCallbackObject({
+  	pause: function() {
+			if (aurora && aurora.playing) auroa.pause()
+			if (aurora && !aurora.playing) auroa.play()
+  	},
+  	next: function() {
+    	//yourPlayer.skip();
+  	},
+  	previous:function() {
+    	//yourPlayer.previous();
+  	}
+	});
+
   $('.column').data('num', 0);
 
   $audio = $('#audio');
@@ -392,3 +390,4 @@ function toggle() {
   }
   console.log('music is now ' + ((aurora.playing) ? 'playing' : 'paused'));
 }
+
